@@ -1,4 +1,4 @@
-package com.vowing.purchase.config;
+package com.vowing.parang.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
