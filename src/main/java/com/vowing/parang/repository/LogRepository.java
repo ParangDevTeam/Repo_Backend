@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface LogRepository extends JpaRepository<LogEntity, Long> {
-    //List<LogEntity> findByCategoryId(Long categoryId);
+    List<LogEntity> findByCategoryId(Long categoryId);
 
     //List<LogEntity> findByTimestampBetween(LocalDateTime fromDate, LocalDateTime toDate);
 }

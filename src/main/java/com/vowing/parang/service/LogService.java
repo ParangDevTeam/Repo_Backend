@@ -34,7 +34,7 @@ public class LogService {
                 .collect(Collectors.toList());
     }
 
-    /*
+
     @Transactional
     public List<LogDTO> getLogByCategoryId(Long categoryId) {
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
@@ -46,7 +46,7 @@ public class LogService {
                 .map(LogEntity::toValueObject)
                 .collect(Collectors.toList());
     }
-
+/*
     @Transactional
     public Workbook generateLogListExcel(LocalDateTime fromDate, LocalDateTime toDate) {
         List<LogEntity> logEntityList = logRepository.findByTimestampBetween(fromDate, toDate);

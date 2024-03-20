@@ -34,7 +34,7 @@ public class LogController {
                 .status(HttpStatus.OK)
                 .body(logDTOList);
     }
-/*
+
     @GetMapping("/category")
     public ResponseEntity<List<LogDTO>> getCategorySelect(Long category) {
         List<LogDTO> LogDTOList = logService.getLogByCategoryId(category);
@@ -42,7 +42,7 @@ public class LogController {
                 .status(HttpStatus.OK)
                 .body(LogDTOList);
     }
-
+/*
     @GetMapping("/excel")
     public ResponseEntity<byte[]> exportLogListExcel(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
