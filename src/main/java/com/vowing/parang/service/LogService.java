@@ -25,6 +25,10 @@ public class LogService {
     private final LogRepository logRepository;
     private final CategoryRepository categoryRepository;
 
+    /**
+     * 로그 목록
+     * @return 로그 목록
+     */
     @Transactional
     public List<LogDTO> logList() {
         List<LogEntity> logEntityList = logRepository.findAll();
@@ -34,7 +38,11 @@ public class LogService {
                 .collect(Collectors.toList());
     }
 
-
+    /**
+     * 카테고리 별 목록
+     * @param categoryId categoryId
+     * @return 카테고리 별 목록
+     */
     @Transactional
     public List<LogDTO> getLogByCategoryId(Long categoryId) {
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
@@ -46,10 +54,17 @@ public class LogService {
                 .map(LogEntity::toValueObject)
                 .collect(Collectors.toList());
     }
-/*
+
+    /**
+     * 날짜별 엑셀 파일 다운로드
+     * @param fromDate fromDate
+     * @param toDate toDate
+     * @return 날짜 별 엑셀 파일
+     */
+
     @Transactional
-    public Workbook generateLogListExcel(LocalDateTime fromDate, LocalDateTime toDate) {
-        List<LogEntity> logEntityList = logRepository.findByTimestampBetween(fromDate, toDate);
+    public Workbook generateLogListExcel(String fromDate, String toDate) {
+        List<LogEntity> logEntityList = logRepository.findByCreateLogTimeBetween(fromDate, toDate);
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Log List");
@@ -64,7 +79,7 @@ public class LogService {
         int rowNum = 1;
         for (LogEntity logEntity : logEntityList) {
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(String.valueOf(logEntity.getTimestamp()));
+            row.createCell(0).setCellValue(String.valueOf(logEntity.getCreateLogTime()));
             row.createCell(1).setCellValue(logEntity.getUserId());
             row.createCell(2).setCellValue(logEntity.getStatus());
             row.createCell(3).setCellValue(logEntity.getWorkDay());
@@ -74,6 +89,6 @@ public class LogService {
         return workbook;
     }
 
-     */
+
 
 }

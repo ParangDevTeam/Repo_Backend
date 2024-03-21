@@ -9,7 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -25,7 +26,7 @@ public class LogEntity {
     private Long id;
 
     @Column
-    private LocalDateTime timestamp;
+    private String createLogTime = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     @Column
     private String userId;
     @Column
@@ -40,7 +41,7 @@ public class LogEntity {
     public LogDTO toValueObject() {
         return new LogDTO(
                 this.getId(),
-                this.getTimestamp(),
+                this.getCreateLogTime(),
                 this.getUserId(),
                 this.getStatus(),
                 this.getWorkDay(),

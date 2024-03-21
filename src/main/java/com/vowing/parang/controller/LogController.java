@@ -26,6 +26,10 @@ public class LogController {
 
     private final LogService logService;
 
+    /**
+     * 로그 목록
+     * @return 로그 목록
+     */
     @GetMapping("/")
     public ResponseEntity<List<LogDTO>> getAllLog() {
         List<LogDTO> logDTOList = logService.logList();
@@ -35,6 +39,11 @@ public class LogController {
                 .body(logDTOList);
     }
 
+    /**
+     * 카테고리 별 목록
+     * @param category category
+     * @return 카테고리 별 목록
+     */
     @GetMapping("/category")
     public ResponseEntity<List<LogDTO>> getCategorySelect(Long category) {
         List<LogDTO> LogDTOList = logService.getLogByCategoryId(category);
@@ -42,11 +51,18 @@ public class LogController {
                 .status(HttpStatus.OK)
                 .body(LogDTOList);
     }
-/*
+
+    /**
+     * 날짜별 엑셀 파일 다운로드
+     * @param fromDate fromDate
+     * @param toDate toDate
+     * @return 날짜별 엑셀 파일 다운로드
+     */
+
     @GetMapping("/excel")
     public ResponseEntity<byte[]> exportLogListExcel(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String fromDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String toDate
     ) {
         Workbook workbook = logService.generateLogListExcel(fromDate, toDate);
 
@@ -55,7 +71,7 @@ public class LogController {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
-            headers.setContentDispositionFormData("attachment", "log_list.xlsx");
+            headers.setContentDispositionFormData("attachment", fromDate.toString() + " ~ " + toDate.toString() + ".xlsx");
 
             return ResponseEntity.ok()
                     .headers(headers)
@@ -66,5 +82,7 @@ public class LogController {
         }
     }
 
- */
+
+
+
 }

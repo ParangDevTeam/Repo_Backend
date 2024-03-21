@@ -49,14 +49,14 @@ public class AddSlotService {
 
         AddSlotEntity saveEntity = addSlotRepository.save(addSlotEntity);
 
-         LogEntity logEntity = LogEntity.builder()
-            .timestamp(LocalDateTime.now())
-            .userId(dto.getUserId())
-            .status("신규")
-            .workDay(dto.getWorkDay())
-            .addNumber(dto.getAddNumber())
-            .categoryId(dto.getCategoryId())
-            .build();
+        LogEntity logEntity = LogEntity.builder()
+                .createLogTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .userId(dto.getUserId())
+                .status("신규")
+                .workDay(dto.getWorkDay())
+                .addNumber(dto.getAddNumber())
+                .categoryId(dto.getCategoryId())
+                .build();
 
         logRepository.save(logEntity);
 
@@ -82,7 +82,7 @@ public class AddSlotService {
             addSlotRepository.save(entity);
 
             LogEntity logEntity = LogEntity.builder()
-                    .timestamp(LocalDateTime.now())
+                    .createLogTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                     .userId(dto.getUserId())
                     .status("수정")
                     .workDay(dto.getWorkDay())

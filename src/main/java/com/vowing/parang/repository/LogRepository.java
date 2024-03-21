@@ -11,5 +11,5 @@ import java.util.List;
 public interface LogRepository extends JpaRepository<LogEntity, Long> {
     List<LogEntity> findByCategoryId(Long categoryId);
 
-    //List<LogEntity> findByTimestampBetween(LocalDateTime fromDate, LocalDateTime toDate);
+    List<LogEntity> findByCreateLogTimeBetween(String fromDate, String toDate);
 }

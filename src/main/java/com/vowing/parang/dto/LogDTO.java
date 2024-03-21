@@ -2,8 +2,6 @@ package com.vowing.parang.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class LogDTO {
     private Long id;
-    private LocalDateTime timestamp;
+    private String createLogTime;
     private String userId;
     private String status;
     private Long workDay;
