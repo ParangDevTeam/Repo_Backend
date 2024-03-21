@@ -58,7 +58,6 @@ public class LogController {
      * @param toDate toDate
      * @return 날짜별 엑셀 파일 다운로드
      */
-
     @GetMapping("/excel")
     public ResponseEntity<byte[]> exportLogListExcel(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String fromDate,
