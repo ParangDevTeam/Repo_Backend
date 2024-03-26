@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -45,21 +46,26 @@ public class LogController {
     }
 
     /**
-     * 카테고리별 페이징 목록
-     * @param pageable Pageable
-     * @param category category
-     * @return 카테고리별 페이징 목록
+     * 카테고리 별 페이징 목록
+     * @param fromDate 시작 날짜
+     * @param toDate 끝 날짜
+     * @param category 카테고리
+     * @param pageable 페이징 처리
+     * @return 카테고리 별 페이징 목록
      */
-    @GetMapping("/category/paging")
-    public ResponseEntity<Page<LogDTO>> getLogByCategoryPaging(
-            @PageableDefault Pageable pageable,
-            @RequestParam(name = "category") String category
+    @GetMapping("/filter/paging")
+    public ResponseEntity<Page<LogDTO>> getFilteredLogsPaging(
+        @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+        @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+        @RequestParam(name = "category") String category,
+        @PageableDefault Pageable pageable
     ) {
-        Page<LogDTO> logDTOPage = logService.logListByCategoryPaging(pageable, category);
+        Page<LogDTO> filteredLogsPage = logService.getFilteredLogsPaging(fromDate, toDate, category, pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(logDTOPage);
+                .body(filteredLogsPage);
     }
+
 
     /**
      * 날짜별 엑셀 파일 다운로드
@@ -67,6 +73,7 @@ public class LogController {
      * @param toDate toDate
      * @return 날짜별 엑셀 파일 다운로드
      */
+
     @GetMapping("/excel")
     public ResponseEntity<byte[]> exportLogListExcel (
         @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String fromDate,
@@ -87,5 +94,7 @@ public class LogController {
                 .headers(headers)
                 .body(outputStream.toByteArray());
     }
+
+
 
 }
