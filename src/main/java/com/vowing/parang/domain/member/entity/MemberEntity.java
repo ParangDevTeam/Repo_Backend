@@ -1,12 +1,9 @@
 package com.vowing.parang.domain.member.entity;
 
-import com.vowing.parang.domain.member.dto.MemberDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.vowing.parang.domain.member.constant.UserType;
+import com.vowing.parang.domain.member.dto.MemberDto;
+import com.vowing.parang.domain.member.dto.response.MemberResponseDto;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +21,9 @@ import lombok.ToString;
 @Table(name = "Member")
 public class MemberEntity {
 
+    /**
+     * 회원 번호(PK)
+     * */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
@@ -35,13 +35,23 @@ public class MemberEntity {
     private String password;
     @Column(name = "memo", nullable = false)
     private String memo;
+    @Column(name="userType",nullable = false)
+    private UserType userType;
+    @Column(name="agencyId",nullable = true)
+    private Long agencyId;
 
-    public MemberDTO toValueObject() {
-        return new MemberDTO(
+    /**
+     * 생성자
+     * */
+    public MemberDto toValueObject() {
+        return new MemberDto(
                 this.getId(),
                 this.getUserId(),
                 this.getPassword(),
-                this.getMemo()
+                this.getMemo(),
+                this.getUserType(),
+                this.getAgencyId()
         );
     }
+
 }
