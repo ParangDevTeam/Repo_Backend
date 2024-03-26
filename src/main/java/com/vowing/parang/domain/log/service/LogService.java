@@ -79,7 +79,7 @@ public class LogService {
 
     @Transactional
     public Workbook LogListExcel(String fromDate, String toDate, String category) {
-        List<LogEntity> logEntityList = logRepository.findByCreateLogTimeBetweenAndCategory(fromDate, toDate, category);
+        List<LogEntity> logEntityList = logRepository.findAllByCreateLogTimeBetweenAndCategory(fromDate, toDate, category);
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Log List");

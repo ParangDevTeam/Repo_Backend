@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface LogRepository extends JpaRepository<LogEntity, Long> {
-    Page<LogEntity> findByCategory(String category, Pageable pageable);
-    List<LogEntity> findByCreateLogTimeBetweenAndCategory(String fromDate, String toDate, String category);
+    List<LogEntity> findAllByCreateLogTimeBetweenAndCategory(String fromDate, String toDate, String category);
     Page<LogEntity> findByCreateLogTimeBetweenAndCategory(String fromDate, String toDate, String category, Pageable pageable);
 }
