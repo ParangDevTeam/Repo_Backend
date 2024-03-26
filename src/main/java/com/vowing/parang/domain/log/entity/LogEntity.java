@@ -36,7 +36,7 @@ public class LogEntity {
     @Column
     private Long addNumber;
     @Column
-    private Long categoryId;
+    private String category;
 
     public LogDTO toValueObject() {
         return new LogDTO(
@@ -46,7 +46,7 @@ public class LogEntity {
                 this.getStatus(),
                 this.getWorkDay(),
                 this.getAddNumber(),
-                this.getCategoryId()
+                this.getCategory()
         );
     }
 }

@@ -5,7 +5,6 @@ import com.vowing.parang.domain.slot.entity.AddSlotEntity;
 import com.vowing.parang.domain.category.entity.CategoryEntity;
 import com.vowing.parang.domain.log.entity.LogEntity;
 import com.vowing.parang.domain.member.entity.MemberEntity;
-import com.vowing.parang.domain.category.error.CategoryNotFound;
 import com.vowing.parang.domain.member.error.UserNotFound;
 import com.vowing.parang.domain.slot.repository.AddSlotRepository;
 import com.vowing.parang.domain.category.repository.CategoryRepository;
@@ -30,8 +29,7 @@ public class AddSlotService {
 
     @Transactional
     public AddSlotDTO addSlotSave(AddSlotDTO dto) {
-        CategoryEntity category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(CategoryNotFound::new);
+    CategoryEntity category = categoryRepository.findByCategory(dto.getCategory());
 
         MemberEntity member = memberRepository.findByUserId(dto.getUserId())
                 .orElseThrow(UserNotFound::new);
@@ -49,19 +47,19 @@ public class AddSlotService {
 
         AddSlotEntity saveEntity = addSlotRepository.save(addSlotEntity);
 
-        LogEntity logEntity = LogEntity.builder()
-                .createLogTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .userId(dto.getUserId())
-                .status("신규")
-                .workDay(dto.getWorkDay())
-                .addNumber(dto.getAddNumber())
-                .categoryId(dto.getCategoryId())
-                .build();
+        final var logEntity = new LogEntity();
+        logEntity.setCreateLogTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        logEntity.setUserId(dto.getUserId());
+        logEntity.setStatus("신규");
+        logEntity.setWorkDay(dto.getWorkDay());
+        logEntity.setAddNumber(dto.getAddNumber());
+        logEntity.setCategory(dto.getCategory());
 
         logRepository.save(logEntity);
 
         return saveEntity.toValueObject();
     }
+
 
     @Transactional
     public AddSlotDTO updateWorkDay(Long id, AddSlotDTO dto) throws Exception {
@@ -87,7 +85,7 @@ public class AddSlotService {
                     .status("수정")
                     .workDay(dto.getWorkDay())
                     .addNumber(entity.getAddNumber())
-                    .categoryId(entity.getCategory().getId())
+                    .category(entity.getCategory().getCategory())
                     .build();
 
             logRepository.save(logEntity);

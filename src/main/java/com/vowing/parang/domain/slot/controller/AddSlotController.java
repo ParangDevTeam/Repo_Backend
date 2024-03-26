@@ -33,6 +33,7 @@ public class AddSlotController {
     ) throws Exception {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(addSlotService.updateWorkDay(id,dto));
+                .body(addSlotService.updateWorkDay(id, dto));
     }
+
 }
