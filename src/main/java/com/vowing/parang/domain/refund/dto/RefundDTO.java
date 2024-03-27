@@ -12,6 +12,7 @@ public class RefundDTO {
     private String category;
     private String userId;
     private String productName;
+    private String productMid;
     private String storeName;
     private String startDate;
     private String refundTime;

@@ -24,9 +24,10 @@ public class RefundService {
     private final SlotRepository slotRepository;
 
     /**
-     * 환불 등록
-     * @param dto dto
-     * @return 환불 등록
+     * 카테고리별 페이징 환불 목록
+     * @param category category
+     * @param pageable pageable
+     * @return 카테고리별 페이징 환불 목록
      */
     @Transactional
     public Page<RefundDTO> getFilterRefundPaging(String category, Pageable pageable) {
@@ -44,26 +45,14 @@ public class RefundService {
     }
 
     /**
-     * 카테고리별 페이징 환불 목록
-     * @param category category
-     * @param pageable pageable
-     * @return 카테고리별 페이징 환불 목록
+     * 환불 등록
      */
     @Transactional
     public RefundDTO postRegisterRefund(RefundDTO dto) {
-
         SlotEntity addSlotEntity = slotRepository.getById(dto.getId());
-
-        final var refundEntity = new RefundEntity();
-        refundEntity.setCategory(addSlotEntity.getCategory().getCategory());
-        refundEntity.setUserId(addSlotEntity.getUserId());
-        refundEntity.setProductName(addSlotEntity.getProductName());
-        refundEntity.setProductMid(addSlotEntity.getProductMid());
-        refundEntity.setStartDate(addSlotEntity.getStartDate());
-        refundEntity.setRefundTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
+        RefundEntity refundEntity = RefundEntity.fromSlotEntity(addSlotEntity);
         refundRepository.save(refundEntity);
-
         return refundEntity.toValueObject();
     }
+
 }
