@@ -1,5 +1,6 @@
 package com.vowing.parang.domain.log.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.vowing.parang.domain.log.dto.LogDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +26,7 @@ public class LogEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String createLogTime = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     @Column
     private String userId;

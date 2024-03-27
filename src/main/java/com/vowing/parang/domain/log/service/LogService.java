@@ -76,7 +76,6 @@ public class LogService {
      * @param toDate toDate
      * @return 날짜 별 엑셀 파일
      */
-
     @Transactional
     public Workbook LogListExcel(String fromDate, String toDate, String category) {
         List<LogEntity> logEntityList = logRepository.findAllByCreateLogTimeBetweenAndCategory(fromDate, toDate, category);

@@ -29,7 +29,7 @@ public class AddSlotService {
 
     @Transactional
     public AddSlotDTO addSlotSave(AddSlotDTO dto) {
-    CategoryEntity category = categoryRepository.findByCategory(dto.getCategory());
+        CategoryEntity category = categoryRepository.findByCategory(dto.getCategory());
 
         MemberEntity member = memberRepository.findByUserId(dto.getUserId())
                 .orElseThrow(UserNotFound::new);
