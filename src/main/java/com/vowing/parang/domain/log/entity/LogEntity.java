@@ -1,7 +1,12 @@
 package com.vowing.parang.domain.log.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.vowing.parang.domain.category.entity.CategoryEntity;
 import com.vowing.parang.domain.log.dto.LogDTO;
+import com.vowing.parang.domain.member.entity.MemberEntity;
+import com.vowing.parang.domain.slot.dto.SlotDto;
+import com.vowing.parang.domain.slot.dto.request.SlotCreateRequestDto;
+import com.vowing.parang.domain.slot.entity.SlotEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +16,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
@@ -50,4 +56,34 @@ public class LogEntity {
                 this.getCategory()
         );
     }
+
+    public static LogEntity createLogEntity(
+            MemberEntity member, CategoryEntity category, SlotCreateRequestDto dto
+    ) {
+        final var logEntity = new LogEntity();
+        logEntity.setCreateLogTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        logEntity.setUserId(member.getUserId());
+        logEntity.setStatus("신규");
+        logEntity.setWorkDay(dto.getWorkDay());
+        logEntity.setAddNumber(dto.getAddNumber());
+        logEntity.setCategory(category.getCategory());
+        return logEntity;
+    }
+
+    public static LogEntity createUpdateLogEntity(
+            MemberEntity member, SlotEntity slotEntity, SlotDto dto
+    ) {
+        final var logEntity = new LogEntity();
+        logEntity.setCreateLogTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        logEntity.setUserId(member.getUserId());
+        logEntity.setStatus("수정");
+        logEntity.setWorkDay(dto.getWorkDay());
+        logEntity.setAddNumber(dto.getAddNumber());
+        logEntity.setCategory(slotEntity.getCategory().getCategory());
+    return logEntity;
+}
+
+
+
+
 }

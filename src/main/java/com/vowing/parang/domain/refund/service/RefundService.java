@@ -23,6 +23,18 @@ public class RefundService {
     private final RefundRepository refundRepository;
     private final SlotRepository slotRepository;
 
+
+    /**
+     * 환불 등록
+     */
+    @Transactional
+    public RefundDTO postRegisterRefund(RefundDTO dto) {
+        SlotEntity addSlotEntity = slotRepository.getById(dto.getId());
+        RefundEntity refundEntity = RefundEntity.fromSlotEntity(addSlotEntity);
+        refundRepository.save(refundEntity);
+        return refundEntity.toValueObject();
+    }
+
     /**
      * 카테고리별 페이징 환불 목록
      * @param category category
@@ -42,17 +54,6 @@ public class RefundService {
         );
 
         return refundEntityPage.map(RefundEntity::toValueObject);
-    }
-
-    /**
-     * 환불 등록
-     */
-    @Transactional
-    public RefundDTO postRegisterRefund(RefundDTO dto) {
-        SlotEntity addSlotEntity = slotRepository.getById(dto.getId());
-        RefundEntity refundEntity = RefundEntity.fromSlotEntity(addSlotEntity);
-        refundRepository.save(refundEntity);
-        return refundEntity.toValueObject();
     }
 
 }

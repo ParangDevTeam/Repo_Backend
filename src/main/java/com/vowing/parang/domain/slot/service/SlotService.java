@@ -50,14 +50,8 @@ public class SlotService {
 
         SlotEntity saveEntity = slotRepository.save(addSlotEntity);
 
-        final var logEntity = new LogEntity();
-        logEntity.setCreateLogTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        logEntity.setUserId(member.getUserId());
-        logEntity.setStatus("신규");
-        logEntity.setWorkDay(dto.getWorkDay());
-        logEntity.setAddNumber(dto.getAddNumber());
-        logEntity.setCategory(category.getCategory());
-
+        //logview 입력
+        LogEntity logEntity = LogEntity.createLogEntity(member, category, dto);
         logRepository.save(logEntity);
 
         return saveEntity.toValueObject();
@@ -82,14 +76,8 @@ public class SlotService {
 
         slotRepository.save(entity);
 
-        final var logEntity = new LogEntity();
-        logEntity.setCreateLogTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        logEntity.setUserId(dto.getUserId());
-        logEntity.setStatus("수정");
-        logEntity.setWorkDay(dto.getWorkDay());
-        logEntity.setAddNumber(dto.getAddNumber());
-        logEntity.setCategory(entity.getCategory().getCategory());
-
+        // logview 수정
+        final var logEntity = LogEntity.createUpdateLogEntity(member, entity, dto);
         logRepository.save(logEntity);
 
         return entity.toValueObject();
