@@ -2,12 +2,14 @@ package com.vowing.parang.domain.slot.dto;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AddSlotDTO {
+public class SlotDto {
     private Long id;
     private String category;
     private String userId;

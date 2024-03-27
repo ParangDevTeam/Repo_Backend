@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
+    Optional<MemberEntity> findByUserId(String userId);
     Page<MemberEntity> findMemberEntitiesByAgencyId(Long agencyId, Pageable pageable);
     List<MemberEntity> findAllByAgencyId(Long agencyId);
     Optional<MemberEntity> findByUserId(String userId);

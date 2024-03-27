@@ -1,7 +1,8 @@
 package com.vowing.parang.domain.slot.controller;
 
-import com.vowing.parang.domain.slot.dto.AddSlotDTO;
-import com.vowing.parang.domain.slot.service.AddSlotService;
+import com.vowing.parang.domain.slot.dto.SlotDto;
+import com.vowing.parang.domain.slot.dto.request.SlotCreateRequestDto;
+import com.vowing.parang.domain.slot.service.SlotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,26 +15,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/slotadd/")
-public class AddSlotController {
+@RequestMapping("/slotadd")
+public class SlotController {
 
-    private final AddSlotService addSlotService;
+    private final SlotService slotService;
 
-    @PostMapping("save")
-    public ResponseEntity<AddSlotDTO> slotSave(@RequestBody AddSlotDTO dto) {
+    @PostMapping("/save")
+    public ResponseEntity<SlotDto> slotSave(@RequestBody SlotCreateRequestDto dto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(addSlotService.addSlotSave(dto));
+                .body(slotService.addSlotSave(dto));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<AddSlotDTO> updateWorkDay (
+    @PutMapping("/update/{id}")
+    public ResponseEntity<SlotDto> updateWorkDay (
             @PathVariable(name = "id") Long id,
-            @RequestBody AddSlotDTO dto
+            @RequestBody SlotDto dto
     ) throws Exception {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(addSlotService.updateWorkDay(id, dto));
+                .body(slotService.updateWorkDay(id,dto));
     }
-
 }
