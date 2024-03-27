@@ -2,17 +2,12 @@ package com.vowing.parang.domain.slot.entity;
 
 import com.vowing.parang.domain.category.entity.CategoryEntity;
 import com.vowing.parang.domain.member.entity.MemberEntity;
-import com.vowing.parang.domain.slot.dto.AddSlotDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.vowing.parang.domain.slot.dto.SlotDto;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Entity
 @Getter
@@ -21,7 +16,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "AddSlot")
-public class AddSlotEntity {
+public class SlotEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,31 +32,42 @@ public class AddSlotEntity {
 
     @Column
     private Long addNumber;
+
     @Column
     private Long workDay;
+
     @Column
     private String startDate;
+
     @Column
     private String productName;
+
     @Column
     private String productMid;
+
     @Column
     private String mainKeyword;
+
     @Column
     private String serveKeyword;
+
     @Column
     private String goShopping;
+
     @Column
     private String storeName;
+
     @Column
     private String endDate;
+
     @Column
     private String productUrl;
+
     @Column
     private String link;
 
-    public AddSlotDTO toValueObject() {
-        return new AddSlotDTO(
+    public SlotDto toValueObject() {
+        return new SlotDto(
                 this.getId(),
                 this.getCategory().getId(),
                 this.getUserId().getUserId(),
