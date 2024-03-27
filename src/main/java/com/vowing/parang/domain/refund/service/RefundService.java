@@ -16,8 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 public class RefundService {
 
     private final RefundRepository refundRepository;
-    private final MemberRepository memberRepository;
     private final AddSlotRepository addSlotRepository;
 
     @Transactional
@@ -59,12 +58,12 @@ public class RefundService {
         AddSlotEntity addSlotEntity = addSlotRepository.getById(dto.getId());
 
          final var refundEntity = new RefundEntity();
-         refundEntity.setCategory(addSlotEntity.getCategory());
+         refundEntity.setCategory(addSlotEntity.getCategory().getCategory());
          refundEntity.setUserId(addSlotEntity.getUserId());
          refundEntity.setProductName(addSlotEntity.getProductName());
          refundEntity.setProductMid(addSlotEntity.getProductMid());
          refundEntity.setStartDate(addSlotEntity.getStartDate());
-         refundEntity.setRefundTime(Instant.now());
+         refundEntity.setRefundTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
          refundRepository.save(refundEntity);
 

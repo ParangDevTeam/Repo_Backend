@@ -2,7 +2,7 @@ package com.vowing.parang.domain.refund.dto;
 
 import lombok.*;
 
-import java.time.Instant;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -16,5 +16,5 @@ public class RefundDTO {
     private String productName;
     private String storeName;
     private String startDate;
-    private Instant refundTime;
+    private String refundTime;
 }

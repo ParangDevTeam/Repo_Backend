@@ -15,7 +15,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -30,9 +31,8 @@ public class RefundEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category", nullable = false)
-    private CategoryEntity category;
+    @Column
+    private String category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -46,14 +46,13 @@ public class RefundEntity {
     private String storeName;
     @Column
     private String startDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Instant refundTime;
+    @Column
+    private String refundTime;
 
     public RefundDTO toValueObject() {
         return new RefundDTO(
                 this.getId(),
-                this.getCategory().getCategory(),
+                this.getCategory(),
                 this.getUserId().getUserId(),
                 this.getProductName(),
                 this.getStoreName(),
