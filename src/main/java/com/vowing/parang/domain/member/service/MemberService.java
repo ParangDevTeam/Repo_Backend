@@ -8,12 +8,17 @@ import com.vowing.parang.domain.member.error.UserNotFound;
 import com.vowing.parang.domain.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +39,7 @@ public class MemberService {
     public MemberDto memberSave(MemberDto dto) {
         final var entity = new MemberEntity();
         entity.setUserId(dto.getUserId());
-        entity.setPassword(dto.getPassword());
+        entity.setPassword(hashPassword(dto.getPassword()));
         entity.setMemo(dto.getMemo());
         entity.setUserType(dto.getUserType());
         entity.setAgencyId(dto.getAgencyId());
@@ -137,8 +142,22 @@ public class MemberService {
         if(!requestDto.getMemo().isEmpty())
             existingMember.setMemo(requestDto.getMemo());
         if(!requestDto.getPassword().isEmpty())
-            existingMember.setPassword(requestDto.getPassword());
+            existingMember.setPassword(hashPassword(requestDto.getPassword()));
 
         memberRepository.save(existingMember);
+    }
+
+
+    /**
+     * 비밀번호 해시
+     */
+    @SneakyThrows(NoSuchAlgorithmException.class)
+    private String hashPassword(String password) {
+        final var instance = MessageDigest.getInstance("SHA-512");
+        instance.update((password + "<JH: place your salt here>").getBytes(StandardCharsets.UTF_8));
+        final var bytes = instance.digest();
+        final var numericRepresentation = new BigInteger(1, bytes);
+
+        return String.format("%0128x", numericRepresentation);
     }
 }

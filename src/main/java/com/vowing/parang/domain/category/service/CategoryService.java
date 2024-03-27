@@ -16,6 +16,10 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    /**
+     * 카테고리 전체목록 가져오기
+     * @return
+     */
     @Transactional
      public List<CategoryDTO> getAllCategory() {
         List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
