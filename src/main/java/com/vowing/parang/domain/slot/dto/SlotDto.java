@@ -11,7 +11,7 @@ import java.util.Date;
 @Builder
 public class SlotDto {
     private Long id;
-    private Long categoryId;
+    private String category;
     private String userId;
     private Long addNumber;
     private Long workDay;

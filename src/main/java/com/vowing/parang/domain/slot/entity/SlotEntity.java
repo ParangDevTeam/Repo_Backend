@@ -23,12 +23,12 @@ public class SlotEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category", nullable = false)
     private CategoryEntity category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // 외래 키 설정
-    private MemberEntity userId; // MemberEntity와의 관계 설정
+    @JoinColumn(name = "user_id", nullable = false)
+    private MemberEntity userId;
 
     @Column
     private Long addNumber;
@@ -69,7 +69,7 @@ public class SlotEntity {
     public SlotDto toValueObject() {
         return new SlotDto(
                 this.getId(),
-                this.getCategory().getId(),
+                this.getCategory().getCategory(),
                 this.getUserId().getUserId(),
                 this.getAddNumber(),
                 this.getWorkDay(),

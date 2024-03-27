@@ -12,8 +12,16 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,25 +45,30 @@ public class LogService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 카테고리 별 목록
-     * @param categoryId categoryId
-     * @return 카테고리 별 목록
+     /**
+     * 카테고리 별 페이징 목록
+     * @param fromDate 시작 날짜
+     * @param toDate 끝 날짜
+     * @param category 카테고리
+     * @param pageable 페이징 처리
+     * @return 카테고리 별 페이징 목록
      */
-    /*
     @Transactional
-    public List<LogDTO> getLogByCategoryId(Long categoryId) {
-        CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
-                .orElseThrow(CategoryNotFound::new);
+    public Page<LogDTO> getFilteredLogsPaging(LocalDate fromDate, LocalDate toDate, String category, Pageable pageable) {
+        Page<LogEntity> logEntityPage = logRepository.findByCreateLogTimeBetweenAndCategory(
+                fromDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                toDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                category,
+                 PageRequest.of(
+                            pageable.getPageNumber(),
+                            // pageable.getPageSize(),// 기본값이 10개
+                            3,
+                            Sort.by(Sort.Direction.DESC, "id")
+                    )
+        );
 
-        List<LogEntity> logEntityList = logRepository.findByCategoryId(categoryId);
-
-        return logEntityList.stream()
-                .map(LogEntity::toValueObject)
-                .collect(Collectors.toList());
+        return logEntityPage.map(LogEntity::toValueObject);
     }
-
-     */
 
     /**
      * 날짜별 엑셀 파일 다운로드
@@ -63,11 +76,9 @@ public class LogService {
      * @param toDate toDate
      * @return 날짜 별 엑셀 파일
      */
-
-    /*
     @Transactional
-    public Workbook generateLogListExcel(String fromDate, String toDate) {
-        List<LogEntity> logEntityList = logRepository.findByCreateLogTimeBetween(fromDate, toDate);
+    public Workbook LogListExcel(String fromDate, String toDate, String category) {
+        List<LogEntity> logEntityList = logRepository.findAllByCreateLogTimeBetweenAndCategory(fromDate, toDate, category);
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Log List");
@@ -91,8 +102,8 @@ public class LogService {
 
         return workbook;
     }
-    
-     */
+
+
 
 
 

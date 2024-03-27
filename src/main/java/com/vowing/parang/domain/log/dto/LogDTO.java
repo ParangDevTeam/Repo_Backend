@@ -14,5 +14,5 @@ public class LogDTO {
     private String status;
     private Long workDay;
     private Long addNumber;
-    private Long categoryId;
+    private String category;
 }
