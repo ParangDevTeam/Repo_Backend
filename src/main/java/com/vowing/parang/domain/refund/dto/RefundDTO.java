@@ -2,8 +2,6 @@ package com.vowing.parang.domain.refund.dto;
 
 import lombok.*;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor

@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/refund/")
@@ -24,21 +22,24 @@ public class RefundController {
 
     private final RefundService refundService;
 
+    /**
+     * 환불 등록
+     * @param dto dto
+     * @return 환불 등록
+     */
     @PostMapping("/save")
     public ResponseEntity<RefundDTO> postRegisterRefund(@RequestBody RefundDTO dto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(refundService.postRegisterRefund(dto));
     }
-    @GetMapping("")
-    public ResponseEntity<List<RefundDTO>> getRefundList() {
-        List<RefundDTO> refundDTOList = refundService.refundList();
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(refundDTOList);
-    }
-
+    /**
+     * 카테고리별 페이징 환불 목록
+     * @param category category
+     * @param pageable pageable
+     * @return 카테고리별 페이징 환불 목록
+     */
     @GetMapping("/filter/paging")
     public ResponseEntity<Page<RefundDTO>> getFilterRefundPaging(
             @RequestParam(name = "category") String category,

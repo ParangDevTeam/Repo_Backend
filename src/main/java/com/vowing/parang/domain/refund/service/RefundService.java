@@ -1,13 +1,10 @@
 package com.vowing.parang.domain.refund.service;
 
-import com.vowing.parang.domain.member.entity.MemberEntity;
-import com.vowing.parang.domain.member.error.UserNotFound;
-import com.vowing.parang.domain.member.repository.MemberRepository;
 import com.vowing.parang.domain.refund.dto.RefundDTO;
 import com.vowing.parang.domain.refund.entity.RefundEntity;
 import com.vowing.parang.domain.refund.repository.RefundRepository;
-import com.vowing.parang.domain.slot.entity.AddSlotEntity;
-import com.vowing.parang.domain.slot.repository.AddSlotRepository;
+import com.vowing.parang.domain.slot.entity.SlotEntity;
+import com.vowing.parang.domain.slot.repository.SlotRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,25 +15,19 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RefundService {
 
     private final RefundRepository refundRepository;
-    private final AddSlotRepository addSlotRepository;
+    private final SlotRepository slotRepository;
 
-    @Transactional
-    public List<RefundDTO> refundList() {
-        List<RefundEntity> refundEntityList = refundRepository.findAll();
-
-        return refundEntityList.stream()
-                .map(RefundEntity::toValueObject)
-                .collect(Collectors.toList());
-    }
-
+    /**
+     * 환불 등록
+     * @param dto dto
+     * @return 환불 등록
+     */
     @Transactional
     public Page<RefundDTO> getFilterRefundPaging(String category, Pageable pageable) {
         Page<RefundEntity> refundEntityPage = refundRepository.findByCategory(
@@ -52,21 +43,27 @@ public class RefundService {
         return refundEntityPage.map(RefundEntity::toValueObject);
     }
 
+    /**
+     * 카테고리별 페이징 환불 목록
+     * @param category category
+     * @param pageable pageable
+     * @return 카테고리별 페이징 환불 목록
+     */
     @Transactional
     public RefundDTO postRegisterRefund(RefundDTO dto) {
 
-        AddSlotEntity addSlotEntity = addSlotRepository.getById(dto.getId());
+        SlotEntity addSlotEntity = slotRepository.getById(dto.getId());
 
-         final var refundEntity = new RefundEntity();
-         refundEntity.setCategory(addSlotEntity.getCategory().getCategory());
-         refundEntity.setUserId(addSlotEntity.getUserId());
-         refundEntity.setProductName(addSlotEntity.getProductName());
-         refundEntity.setProductMid(addSlotEntity.getProductMid());
-         refundEntity.setStartDate(addSlotEntity.getStartDate());
-         refundEntity.setRefundTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        final var refundEntity = new RefundEntity();
+        refundEntity.setCategory(addSlotEntity.getCategory().getCategory());
+        refundEntity.setUserId(addSlotEntity.getUserId());
+        refundEntity.setProductName(addSlotEntity.getProductName());
+        refundEntity.setProductMid(addSlotEntity.getProductMid());
+        refundEntity.setStartDate(addSlotEntity.getStartDate());
+        refundEntity.setRefundTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-         refundRepository.save(refundEntity);
+        refundRepository.save(refundEntity);
 
-         return refundEntity.toValueObject();
+        return refundEntity.toValueObject();
     }
 }
