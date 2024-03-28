@@ -18,7 +18,6 @@ public class CategoryService {
 
     /**
      * 카테고리 전체목록 가져오기
-     * @return
      */
     @Transactional
      public List<CategoryDTO> getAllCategory() {

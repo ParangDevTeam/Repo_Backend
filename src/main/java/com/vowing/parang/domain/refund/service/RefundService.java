@@ -13,9 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Service
 @RequiredArgsConstructor
 public class RefundService {
@@ -37,9 +34,6 @@ public class RefundService {
 
     /**
      * 카테고리별 페이징 환불 목록
-     * @param category category
-     * @param pageable pageable
-     * @return 카테고리별 페이징 환불 목록
      */
     @Transactional
     public Page<RefundDTO> getFilterRefundPaging(String category, Pageable pageable) {
@@ -47,8 +41,8 @@ public class RefundService {
                 category,
                 PageRequest.of(
                         pageable.getPageNumber(),
-                        // pageable.getPageSize(),// 기본값이 10개
-                        3,
+                        pageable.getPageSize(),// 기본값이 10개
+                        // 3,
                         Sort.by(Sort.Direction.DESC, "id")
                 )
         );

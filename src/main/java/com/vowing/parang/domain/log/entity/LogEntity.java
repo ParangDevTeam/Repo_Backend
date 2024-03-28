@@ -1,6 +1,5 @@
 package com.vowing.parang.domain.log.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.vowing.parang.domain.category.entity.CategoryEntity;
 import com.vowing.parang.domain.log.dto.LogDTO;
 import com.vowing.parang.domain.member.entity.MemberEntity;
@@ -30,21 +29,25 @@ public class LogEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "createLogTime", nullable = false, updatable = false)
     private String createLogTime = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    @Column
+    @Column(name = "userId", nullable = false)
     private String userId;
-    @Column
+    @Column(name = "status", nullable = false)
     private String status;
-    @Column
+    @Column(name = "workDay", nullable = false)
     private Long workDay;
-    @Column
+    @Column(name = "addNumber", nullable = false)
     private Long addNumber;
-    @Column
+    @Column(name = "category", nullable = false)
     private String category;
 
+    /**
+     *  생성자
+     */
     public LogDTO toValueObject() {
         return new LogDTO(
                 this.getId(),
@@ -57,6 +60,10 @@ public class LogEntity {
         );
     }
 
+    /**
+     *  Dto -> Entity 변환
+     *  슬롯 테이블 입력시 로그 테이블 기록
+     */
     public static LogEntity createLogEntity(
             MemberEntity member, CategoryEntity category, SlotCreateRequestDto dto
     ) {
@@ -70,6 +77,10 @@ public class LogEntity {
         return logEntity;
     }
 
+    /**
+     *  Dto -> Entity 변환
+     *  슬롯 테이블 수정시 로그 테이블 기록
+     */
     public static LogEntity createUpdateLogEntity(
             MemberEntity member, SlotEntity slotEntity, SlotDto dto
     ) {
@@ -78,7 +89,7 @@ public class LogEntity {
         logEntity.setUserId(member.getUserId());
         logEntity.setStatus("수정");
         logEntity.setWorkDay(dto.getWorkDay());
-        logEntity.setAddNumber(dto.getAddNumber());
+        logEntity.setAddNumber(slotEntity.getAddNumber());
         logEntity.setCategory(slotEntity.getCategory().getCategory());
     return logEntity;
 }

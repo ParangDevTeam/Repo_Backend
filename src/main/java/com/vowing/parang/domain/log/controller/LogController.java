@@ -31,7 +31,6 @@ public class LogController {
 
     /**
      * 로그 목록
-     * @return 로그 목록
      */
     @GetMapping("/")
     public ResponseEntity<List<LogDTO>> getAllLog() {
@@ -44,11 +43,6 @@ public class LogController {
 
     /**
      * 카테고리 별 페이징 목록
-     * @param fromDate 시작 날짜
-     * @param toDate 끝 날짜
-     * @param category 카테고리
-     * @param pageable 페이징 처리
-     * @return 카테고리 별 페이징 목록
      */
     @GetMapping("/filter/paging")
     public ResponseEntity<Page<LogDTO>> getFilteredLogsPaging(
@@ -63,12 +57,8 @@ public class LogController {
                 .body(filteredLogsPage);
     }
 
-
     /**
      * 날짜별 엑셀 파일 다운로드
-     * @param fromDate fromDate
-     * @param toDate toDate
-     * @return 날짜별 엑셀 파일 다운로드
      */
     @GetMapping("/excel")
     public ResponseEntity<byte[]> exportLogListExcel (

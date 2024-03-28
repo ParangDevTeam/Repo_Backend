@@ -1,12 +1,8 @@
 package com.vowing.parang.domain.refund.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.vowing.parang.domain.category.entity.CategoryEntity;
 import com.vowing.parang.domain.member.entity.MemberEntity;
-import com.vowing.parang.domain.member.repository.MemberRepository;
 import com.vowing.parang.domain.refund.dto.RefundDTO;
 import com.vowing.parang.domain.slot.entity.SlotEntity;
-import com.vowing.parang.domain.slot.repository.SlotRepository;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,8 +16,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -34,26 +28,30 @@ public class RefundEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column
+    @Column(name = "category", nullable = false)
     private String category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private MemberEntity userId;
 
-    @Column
+    @Column(name = "productName")
     private String productName;
-    @Column
+    @Column(name = "productMid")
     private String productMid;
-    @Column
+    @Column(name = "storeName")
     private String storeName;
-    @Column
+    @Column(name = "startDate")
     private String startDate;
-    @Column
+    @Column(name = "refundTime")
     private String refundTime;
-
+    
+    /**
+     *  생성자
+     */
     public RefundDTO toValueObject() {
         return new RefundDTO(
                 this.getId(),
@@ -69,6 +67,7 @@ public class RefundEntity {
 
     /**
      * 클라이언트 SlotDto -> Entity로 변환
+     * 환불 요청 시 환불 테이블 입력
      */
     public static RefundEntity fromSlotEntity(SlotEntity slotEntity) {
         final var refundEntity = new RefundEntity();

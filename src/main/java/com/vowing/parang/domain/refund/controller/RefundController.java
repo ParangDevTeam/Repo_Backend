@@ -24,8 +24,6 @@ public class RefundController {
 
     /**
      * 환불 등록
-     * @param dto dto
-     * @return 환불 등록
      */
     @PostMapping("/save")
     public ResponseEntity<RefundDTO> postRegisterRefund(@RequestBody RefundDTO dto) {
@@ -36,9 +34,6 @@ public class RefundController {
 
     /**
      * 카테고리별 페이징 환불 목록
-     * @param category category
-     * @param pageable pageable
-     * @return 카테고리별 페이징 환불 목록
      */
     @GetMapping("/filter/paging")
     public ResponseEntity<Page<RefundDTO>> getFilterRefundPaging(
